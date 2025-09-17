@@ -1,5 +1,5 @@
 from pydantic import BaseModel
 
-class Blog(BaseModel):
+class BlogSchema(BaseModel):
     title: str
     body: str
