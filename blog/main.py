@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, status
 from schemas import BlogSchema
 from models import Blog
 from database import Base,engine, SessionLocal
@@ -16,7 +16,7 @@ def get_db():
         db.close()
 
 
-@app.post('/blog',status_code=201)
+@app.post('/blog',status_code=status.)
 def create(request:BlogSchema, db: Session = Depends(get_db) ):
     new_blog = Blog(title = request.title, body = request.body)
     db.add(new_blog)
