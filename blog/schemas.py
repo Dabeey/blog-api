@@ -9,7 +9,7 @@ class ShowBlog(BlogSchema):
         orm_mode = True
 
 
-class UserSchema():
+class UserSchema(BaseModel):
     name:str
     email : str
     password: str
