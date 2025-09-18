@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends, status, Response, HTTPException
-from schemas import BlogSchema
+from schemas import BlogSchema, ShowBlog
 from models import Blog
 from database import Base,engine, SessionLocal
 from sqlalchemy.orm import Session
@@ -31,7 +31,7 @@ def all(db: Session = Depends(get_db)):
     return blogs
 
 
-@app.get('/blog/{id}', status_code=200)
+@app.get('/blog/{id}', status_code=200, response_model = ShowBlog)
 def show(id: int, response:Response, db: Session = Depends(get_db)):
     blog = db.query(Blog).filter(Blog.id == id).first()
     
