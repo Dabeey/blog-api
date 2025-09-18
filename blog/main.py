@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends, status, Response, HTTPException
-from schemas import BlogSchema, ShowBlog
+from schemas import BlogSchema, ShowBlog, UserSchema
 from models import Blog
 from database import Base,engine, SessionLocal
 from sqlalchemy.orm import Session
@@ -60,3 +60,9 @@ def update(id: int, request: BlogSchema, db: Session = Depends(get_db) ):
     blog.update(request.dict())
     db.commit()
     return f'Updated blog with id {id}'
+
+
+
+@app.post('/user')
+def create_user(request:UserSchema, db: Session = Depends(get_db)):
+    return request
