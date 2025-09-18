@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, status
+from fastapi import FastAPI, Depends, status, Response, HTTPException
 from schemas import BlogSchema
 from models import Blog
 from database import Base,engine, SessionLocal
@@ -31,7 +31,32 @@ def all(db: Session = Depends(get_db)):
     return blogs
 
 
-@app.get('/blog/{id}')
-def show(id: int, db: Session = Depends(get_db)):
+@app.get('/blog/{id}', status_code=200)
+def show(id: int, response:Response, db: Session = Depends(get_db)):
     blog = db.query(Blog).filter(Blog.id == id).first()
+    
+    if not blog:
+        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, detail = f'Blog with the id {id} is not available')
     return blog
+
+
+@app.delete('/blog/{id}', status_code=status.HTTP_204_NO_CONTENT)
+def destroy(id: int, db: Session = Depends(get_db)):
+    blog = db.query(Blog).filter(Blog.id == id).delete(synchronize_session=False)
+    if not blog.first():
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail = f'Blog with the id {id} is not available')
+    
+    db.commit()
+    return f'Deleted blog with id {id}'
+
+
+@app.put('/blog/{id}', status_code=status.HTTP_202_ACCEPTED)
+def update(id: int, request: BlogSchema, db: Session = Depends(get_db) ):
+
+    blog  = db.query(Blog).filter(Blog.id == id)
+    if not blog.first():
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail = f'Blog with the id {id} is not available')
+    
+    blog.update(request.dict())
+    db.commit()
+    return f'Updated blog with id {id}'
