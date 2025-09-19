@@ -64,12 +64,11 @@ def update(id: int, request: BlogSchema, db: Session = Depends(get_db) ):
     return f'Updated blog with id {id}'
 
 
-pwd_cxt = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
 
 @app.post('/user')
 def create_user(request:UserSchema, db: Session = Depends(get_db)):
-    hashed_password = pwd_cxt.hash(request.password)
+    # hashed_password = pwd_cxt.hash(request.password)
     new_user = User(name = request.name, email = request.email, password = request.password)
     db.add(new_user)
     db.commit()
