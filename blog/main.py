@@ -4,7 +4,7 @@ from models import Blog, User
 from database import Base,engine, SessionLocal
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
-
+from hashing import Hash
 
 app = FastAPI()
 
@@ -68,8 +68,7 @@ def update(id: int, request: BlogSchema, db: Session = Depends(get_db) ):
 
 @app.post('/user')
 def create_user(request:UserSchema, db: Session = Depends(get_db)):
-    # hashed_password = pwd_cxt.hash(request.password)
-    new_user = User(name = request.name, email = request.email, password = request.password)
+    new_user = User(name = request.name, email = request.email, password = Hash.bcrypt(request.password))
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
