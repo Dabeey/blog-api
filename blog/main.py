@@ -21,7 +21,7 @@ def create(request:BlogSchema, db: Session = Depends(get_db) ):
     new_blog = Blog(title = request.title, body = request.body)
     db.add(new_blog)
     db.commit()
-    db.refresh(new_blog)
+    db.refresh()
     return new_blog
 
 
@@ -68,5 +68,5 @@ def create_user(request:UserSchema, db: Session = Depends(get_db)):
     new_user = User(name = request.name, email = request.email, password = request.password)
     db.add(new_user)
     db.commit()
-    db.refresh()
+    db.refresh(new_user)
     return new_user

@@ -6,10 +6,11 @@ class BlogSchema(BaseModel):
 
 class ShowBlog(BlogSchema):
     class Config():
-        orm_mode = True
+        from_attributes = True
 
 
 class UserSchema(BaseModel):
     name:str
     email : str
     password: str
+
