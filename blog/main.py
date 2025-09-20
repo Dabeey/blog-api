@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends, status, Response, HTTPException
-from schemas import BlogSchema, ShowBlog, UserSchema
+from schemas import BlogSchema, ShowBlog, UserSchema, ShowUser
 from models import Blog, User
 from database import Base,engine, SessionLocal
 from sqlalchemy.orm import Session
@@ -34,7 +34,7 @@ def all(db: Session = Depends(get_db)):
 
 
 @app.get('/blog/{id}', status_code=200, response_model = ShowBlog)
-def show(id: int, response:Response, db: Session = Depends(get_db)):
+def show(id: int, db: Session = Depends(get_db)):
     blog = db.query(Blog).filter(Blog.id == id).first()
     
     if not blog:
@@ -64,9 +64,7 @@ def update(id: int, request: BlogSchema, db: Session = Depends(get_db) ):
     return f'Updated blog with id {id}'
 
 
-
-
-@app.post('/user')
+@app.post('/user', response_model=ShowUser)
 def create_user(request:UserSchema, db: Session = Depends(get_db)):
     new_user = User(name = request.name, email = request.email, password = Hash.bcrypt(request.password))
     db.add(new_user)
