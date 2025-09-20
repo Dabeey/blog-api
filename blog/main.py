@@ -18,7 +18,7 @@ def get_db():
         db.close()
 
 
-@app.post('/blog',status_code=status.HTTP_201_CREATED)
+@app.post('/blog',status_code=status.HTTP_201_CREATED, tags=['blogs'])
 def create(request:BlogSchema, db: Session = Depends(get_db) ):
     new_blog = Blog(title = request.title, body = request.body)
     db.add(new_blog)
@@ -27,13 +27,13 @@ def create(request:BlogSchema, db: Session = Depends(get_db) ):
     return new_blog
 
 
-@app.get('/')
+@app.get('/', tags=['blogs'])
 def all(db: Session = Depends(get_db)):
     blogs = db.query(Blog).all()
     return blogs
 
 
-@app.get('/blog/{id}', status_code=200, response_model = ShowBlog)
+@app.get('/blog/{id}', status_code=200, response_model = ShowBlog, tags=['blogs'])
 def show(id: int, db: Session = Depends(get_db)):
     blog = db.query(Blog).filter(Blog.id == id).first()
     
@@ -42,7 +42,7 @@ def show(id: int, db: Session = Depends(get_db)):
     return blog
 
 
-@app.delete('/blog/{id}', status_code=status.HTTP_204_NO_CONTENT)
+@app.delete('/blog/{id}', status_code=status.HTTP_204_NO_CONTENT, tags=['blogs'])
 def destroy(id: int, db: Session = Depends(get_db)):
     blog = db.query(Blog).filter(Blog.id == id).delete(synchronize_session=False)
     if not blog.first():
@@ -52,7 +52,7 @@ def destroy(id: int, db: Session = Depends(get_db)):
     return f'Deleted blog with id {id}'
 
 
-@app.put('/blog/{id}', status_code=status.HTTP_202_ACCEPTED)
+@app.put('/blog/{id}', status_code=status.HTTP_202_ACCEPTED, tags=['blogs'])
 def update(id: int, request: BlogSchema, db: Session = Depends(get_db) ):
 
     blog  = db.query(Blog).filter(Blog.id == id)
@@ -64,7 +64,7 @@ def update(id: int, request: BlogSchema, db: Session = Depends(get_db) ):
     return f'Updated blog with id {id}'
 
 
-@app.post('/user', response_model=ShowUser)
+@app.post('/user', response_model=ShowUser, tags=['user'])
 def create_user(request:UserSchema, db: Session = Depends(get_db)):
     new_user = User(name = request.name, email = request.email, password = Hash.bcrypt(request.password))
     db.add(new_user)
@@ -74,7 +74,7 @@ def create_user(request:UserSchema, db: Session = Depends(get_db)):
 
 
 
-@app.get('/users/{id}', status_code=200, response_model=ShowUser)
+@app.get('/users/{id}', status_code=200, response_model=ShowUser, tags=['user'])
 def get_user(id: int, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.id==id).first()
 
