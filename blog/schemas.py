@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+from typing import List
+
 
 class BlogSchema(BaseModel):
     title: str
@@ -14,6 +16,8 @@ class UserSchema(BaseModel):
 class ShowUser(BaseModel):
     name:str
     email : str
+
+    blogs: List[BlogSchema] = []
 
     class Config():
         from_attributes = True
