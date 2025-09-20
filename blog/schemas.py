@@ -3,8 +3,6 @@ from pydantic import BaseModel
 class BlogSchema(BaseModel):
     title: str
     body: str
-    
-
 
 
 class UserSchema(BaseModel):
@@ -13,7 +11,7 @@ class UserSchema(BaseModel):
     password: str
 
 
-class ShowUser(UserSchema):
+class ShowUser(BaseModel):
     name:str
     email : str
 
@@ -21,7 +19,7 @@ class ShowUser(UserSchema):
         from_attributes = True
 
 
-class ShowBlog(BlogSchema):
+class ShowBlog(BaseModel):
     title: str
     body: str
 

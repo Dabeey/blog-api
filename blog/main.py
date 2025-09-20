@@ -18,7 +18,7 @@ def get_db():
         db.close()
 
 
-@app.post('/blog',status_code=status.HTTP_201_CREATED, tags=['blogs'])
+@app.post('/blog',status_code=status.HTTP_201_CREATED, response_model = ShowBlog, tags=['blogs'] )
 def create(request:BlogSchema, db: Session = Depends(get_db) ):
     new_blog = Blog(title = request.title, body = request.body, user_id = 1)
     db.add(new_blog)
@@ -52,7 +52,7 @@ def destroy(id: int, db: Session = Depends(get_db)):
     return f'Deleted blog with id {id}'
 
 
-@app.put('/blog/{id}', status_code=status.HTTP_202_ACCEPTED, tags=['blogs'])
+@app.put('/blog/{id}', status_code=status.HTTP_202_ACCEPTED,response_model = ShowBlog,  tags=['blogs'])
 def update(id: int, request: BlogSchema, db: Session = Depends(get_db) ):
 
     blog  = db.query(Blog).filter(Blog.id == id)
