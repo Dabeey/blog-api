@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
 
 class BlogSchema(BaseModel):
@@ -16,6 +16,15 @@ class UserSchema(BaseModel):
 class Login(BaseModel):
     username : str
     password: str
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: setattr
+
+
+class TokenData(BaseModel):
+    username: Optional[str] = None
 
 
 
