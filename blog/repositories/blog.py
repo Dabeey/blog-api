@@ -28,7 +28,8 @@ def show_blog(id: int, db: Session):
 
 def delete_blog(id:int, db: Session):
     blog = db.query(Blog).filter(Blog.id == id).delete(synchronize_session=False)
-    if not blog.first():
+
+    if not blog:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail = f'Blog with the id {id} is not available')
     
     db.commit()
@@ -43,4 +44,4 @@ def update_blog(id: int, request: BlogSchema, db: Session):
     
     blog.update(request.model_dump())
     db.commit()
-    return f'Updated blog with id {id}'
+    return blog.first()
