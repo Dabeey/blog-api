@@ -7,12 +7,16 @@ from typing import List
 from ..hashing import Hash
 
 
-router = APIRouter()
+router = APIRouter(
+    prefix='/user',
+    tags = ['Users']
+)
+
 app = FastAPI()
 
 
 
-@router.post('/user', response_model=ShowUser, tags=['user'])
+@router.post('', response_model=ShowUser)
 def create_user(request:UserSchema, db: Session = Depends(get_db)):
     new_user = User(name = request.name, email = request.email, password = Hash.bcrypt(request.password))
     db.add(new_user)
@@ -22,7 +26,7 @@ def create_user(request:UserSchema, db: Session = Depends(get_db)):
 
 
 
-@router.get('/users/{id}', status_code=200, response_model=ShowUser, tags=['user'])
+@router.get('/{id}', status_code=200, response_model=ShowUser)
 def get_user(id: int, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.id==id).first()
 
