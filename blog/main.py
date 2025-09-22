@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, status, Response, HTTPException
 from schemas import BlogSchema, ShowBlog, UserSchema, ShowUser
 from models import Blog, User
-from database import Base,engine, SessionLocal
+from database import Base,engine, SessionLocal, get_db
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 from hashing import Hash
@@ -13,12 +13,7 @@ app = FastAPI()
 
 Base.metadata.create_all(bind=engine)
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+app.include_router
 
 
 @app.post('/blog',status_code=status.HTTP_201_CREATED, response_model = ShowBlog, tags=['blogs'] )
