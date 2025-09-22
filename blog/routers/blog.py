@@ -4,6 +4,7 @@ from ..models import Blog
 from ..database import SessionLocal, get_db
 from sqlalchemy.orm import Session
 from typing import List
+from ..repositories import blog, user
 
 
 router = APIRouter(
@@ -16,8 +17,7 @@ app = FastAPI()
 
 @router.get('', response_model=List[ShowBlog])
 def all(db: Session = Depends(get_db)):
-    blogs = db.query(Blog).all()
-    return blogs
+    return
 
 
 @router.post('',status_code=status.HTTP_201_CREATED, response_model = ShowBlog )
