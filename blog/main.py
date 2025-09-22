@@ -5,6 +5,9 @@ from database import Base,engine, SessionLocal
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 from hashing import Hash
+from typing import List
+
+
 
 app = FastAPI()
 
@@ -27,7 +30,7 @@ def create(request:BlogSchema, db: Session = Depends(get_db) ):
     return new_blog
 
 
-@app.get('/', tags=['blogs'])
+@app.get('/blog', response_model=List[ShowBlog], tags=['blogs'])
 def all(db: Session = Depends(get_db)):
     blogs = db.query(Blog).all()
     return blogs
