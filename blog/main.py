@@ -16,8 +16,6 @@ Base.metadata.create_all(bind=engine)
 app.include_router(blog.router)
 
 
-
-
 @app.get('/blog', response_model=List[ShowBlog], tags=['blogs'])
 def all(db: Session = Depends(get_db)):
     blogs = db.query(Blog).all()
