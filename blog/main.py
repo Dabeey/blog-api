@@ -6,23 +6,16 @@ from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 from hashing import Hash
 from typing import List
-
+from .routers import blog
 
 
 app = FastAPI()
 
 Base.metadata.create_all(bind=engine)
 
-app.include_router
+app.include_router(blog.router)
 
 
-@app.post('/blog',status_code=status.HTTP_201_CREATED, response_model = ShowBlog, tags=['blogs'] )
-def create(request:BlogSchema, db: Session = Depends(get_db) ):
-    new_blog = Blog(title = request.title, body = request.body, user_id = 1)
-    db.add(new_blog)
-    db.commit()
-    db.refresh(new_blog)
-    return new_blog
 
 
 @app.get('/blog', response_model=List[ShowBlog], tags=['blogs'])
