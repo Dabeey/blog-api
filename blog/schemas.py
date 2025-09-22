@@ -13,6 +13,13 @@ class UserSchema(BaseModel):
     password: str
 
 
+class Login(BaseModel):
+    username : str
+    password: str
+
+
+
+
 class ShowUser(BaseModel):
     name:str
     email : str
