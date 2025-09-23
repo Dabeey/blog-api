@@ -3,3 +3,5 @@ uvicorn
 sqlalchemy
 passlib
 python-jose
+python-multipart
+cryptography
