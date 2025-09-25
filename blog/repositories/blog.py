@@ -44,4 +44,5 @@ def update_blog(id: int, request: BlogSchema, db: Session):
     
     blog.update(request.model_dump())
     db.commit()
+    db.refresh(blog.first())
     return blog.first()
